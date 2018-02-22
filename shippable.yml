@@ -39,5 +39,4 @@ build:
     - $SHIPPABLE_SQLITE_BINARY -version || true
     - sqlite3 -version || true
     - rabbitmqctl status || true
-    - curl -XGET 'localhost:9200'
 
