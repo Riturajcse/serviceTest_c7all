@@ -1,0 +1,43 @@
+language: node_js
+
+node_js:
+  - 9
+
+services:
+  - memcached 
+  - mongodb 
+  - neo4j 
+  - rabbitmq 
+  - redis 
+  - selenium
+  - sqlite 
+  - rethinkdb
+  - riak
+  - cassandra
+
+build:
+            
+  pre_ci_boot:
+    image_name: drydock/c7all
+    image_tag: master
+    pull: true    
+
+  ci:
+    - node --version    
+    - echo SHIPPABLE_MEMCACHED_BINARY=$SHIPPABLE_MEMCACHED_BINARY
+    - echo SHIPPABLE_MONGODB_BINARY=$SHIPPABLE_MONGODB_BINARY
+    - echo SHIPPABLE_NEO4J_BINARY=$SHIPPABLE_NEO4J_BINARY
+    - echo SHIPPABLE_RABBITMQ_BINARY=$SHIPPABLE_RABBITMQ_BINARY
+    - echo SHIPPABLE_REDIS_BINARY=$SHIPPABLE_REDIS_BINARY
+    - echo SHIPPABLE_SELENIUM_v=$SHIPPABLE_SELENIUM_BINARY    
+    - echo SHIPPABLE_SQLITE_BINARY=$SHIPPABLE_SQLITE_BINARY
+
+    - memcached -V
+    - redis-server -v
+    - $SHIPPABLE_NEO4J_BINARY version || true
+    - $SHIPPABLE_MONGODB_BINARY || true
+    - $SHIPPABLE_SQLITE_BINARY -version || true
+    - sqlite3 -version || true
+    - rabbitmqctl status || true
+    - curl -XGET 'localhost:9200'
+
